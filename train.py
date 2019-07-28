@@ -41,26 +41,35 @@ if __name__ == "__main__":
 	        seed = from_numpy(np.random.normal(0,1, size=(images.shape[0], 100))).type(FloatTensor)
 	        if cuda.is_available():
 	            valid_image_labels, fake_image_labels, images, seed = valid_image_labels.cuda(), fake_image_labels.cuda(), images.cuda(), seed.cuda()
-	            
-	        # --- train generator ---
-	        fake_images = gen(seed)
-	        gen_loss = adversarial_loss(disc(fake_images), valid_image_labels)
-	        total_gen_loss += gen_loss.data
-	        
-	        optimizer_g.zero_grad()
-	        gen_loss.backward(retain_graph=True)
-	        optimizer_g.step()
 	        
 	        # --- train discriminator ---
+	        optimizer_d.zero_grad()
+
 	        real_loss = adversarial_loss(disc(images), valid_image_labels)
+	       	real_loss.backward()
+
+	        fake_images = gen(seed).detach()
 	        fake_loss = adversarial_loss(disc(fake_images), fake_image_labels)
+	        fake_loss.backward()
+
 	        # divide by 2 or else loss is weighted 2x towards disc vs gen
 	        disc_loss = (real_loss + fake_loss) / 2
 	        total_disc_loss += disc_loss.data
 	        
-	        optimizer_d.zero_grad()
-	        disc_loss.backward(retain_graph=True)
 	        optimizer_d.step()
+
+	       	# --- train generator ---
+	       	disc = disc.eval()
+	       	
+	       	optimizer_g.zero_grad()
+	       	
+	        gen_loss = adversarial_loss(disc(fake_images), valid_image_labels)
+	        total_gen_loss += gen_loss.data
+	        
+	        gen_loss.backward()
+	        optimizer_g.step()
+
+	        disc = disc.train()
 	        
 	        progress_bar.set_description(f"disc loss: {disc_loss} || gen loss: {gen_loss}")
 
