@@ -2,3 +2,4 @@ annotations/*
 images/*
 images_cropped/*
 .ipynb_checkpoints/*
+__pycache__/*
