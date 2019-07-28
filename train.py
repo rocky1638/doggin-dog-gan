@@ -16,8 +16,8 @@ if __name__ == "__main__":
     gen = Generator()
     disc = Discriminator()
 
-    optimizer_g = optim.Adam(gen.parameters(), lr=0.01, betas=(0.9,0.999))
-    optimizer_d = optim.Adam(disc.parameters(), lr=0.01, betas=(0.9,0.999))
+    optimizer_g = optim.Adam(gen.parameters(), lr=0.001, betas=(0.5,0.999))
+    optimizer_d = optim.Adam(disc.parameters(), lr=0.001, betas=(0.5,0.999))
 
     image_iterator = GenerateIterator('./images_cropped')
 
@@ -73,8 +73,8 @@ if __name__ == "__main__":
 
             optimizer_g.zero_grad()
 
-            # flip labels when training generator -> https://github.com/soumith/ganhacks
-            gen_loss = adversarial_loss(disc(fake_images), fake_image_labels)
+            # fake labels when training generator -> https://github.com/soumith/ganhacks
+            gen_loss = adversarial_loss(disc(fake_images), valid_image_labels)
             total_gen_loss += gen_loss.data
 	        
             gen_loss.backward()
