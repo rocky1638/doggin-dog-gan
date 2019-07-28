@@ -4,6 +4,7 @@ import torchvision.transforms as transforms
 import numpy as np
 from PIL import Image
 import torch
+from options import opts
 
 DATASET_MEAN = (0.485, 0.456, 0.406)
 DATASET_STD = (0.229, 0.224, 0.225)
@@ -14,11 +15,11 @@ class Dataset(data.Dataset):
         'Initialization'
         self.evalu = evalu
         image_paths = glob.glob('{}/*'.format(image_folder_path))
-        self.datalist = [image_path for image_path in image_paths][:1000]
+        self.datalist = [image_path for image_path in image_paths][:opts.numImages]
 
     def __len__(self):
         'Denotes the total number of samples'
-        return 1000
+        return opts.numImages
         # return len(self.datalist)
 
     def __getitem__(self, index):
@@ -41,7 +42,7 @@ class Dataset(data.Dataset):
 
 def GenerateIterator(image_path, evalu=False, shuffle=True):
     params = {
-        'batch_size': 16,
+        'batch_size': opts.batchSize,
         'shuffle': shuffle,
         'num_workers': 0,
         'pin_memory': False,

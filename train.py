@@ -6,6 +6,8 @@ if __name__ == "__main__":
 	from dataset import GenerateIterator
 	import matplotlib.pyplot as plt
 	from models import Generator, Discriminator
+	from generate import generate_image
+	from options import opts
 	
 
 	# Loss function
@@ -19,7 +21,6 @@ if __name__ == "__main__":
 
 	image_iterator = GenerateIterator('./images_cropped')
 
-
 	if cuda.is_available():
 	    adversarial_loss = adversarial_loss.cuda()
 	    gen = gen.cuda()
@@ -28,7 +29,7 @@ if __name__ == "__main__":
 	start_epoch = 1
 	losses = [[],[]]
 
-	for epoch in range(start_epoch,4):
+	for epoch in range(start_epoch,opts.numEpochs):
 	    progress_bar = tqdm.tqdm(image_iterator)
 	    total_gen_loss = 0
 	    total_disc_loss = 0
@@ -63,10 +64,15 @@ if __name__ == "__main__":
 	        
 	        progress_bar.set_description(f"disc loss: {disc_loss} || gen loss: {gen_loss}")
 
-	    avg_gen_loss = total_gen_loss / 63
-	    avg_disc_loss = total_disc_loss / 63
+	    denom = opts.numImages // opts.batchSize
+
+	    avg_gen_loss = total_gen_loss / denom
+	    avg_disc_loss = total_disc_loss / denom
 	    losses[0].append(avg_gen_loss)
 	    losses[1].append(avg_disc_loss)
+
+	    save(gen.state_dict(), './generator.pt')
+	    generate_image('./generator.pt', epoch=epoch)
 
 
 	# display loss graph

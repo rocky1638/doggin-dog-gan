@@ -1,4 +1,5 @@
 from torch import nn
+from options import opts
 
 class Generator(nn.Module):
     def __init__(self):

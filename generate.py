@@ -4,13 +4,15 @@ from torchvision.utils import save_image
 import numpy as np
 from models import Generator
 
-gen = Generator()
-gen.load_state_dict(load('./generator.pt'))
+def generate_image(generator_path, epoch):	
+	gen = Generator()
+	gen.load_state_dict(load('./generator.pt'))
 
-seed = from_numpy(np.random.normal(0,1, size=(1, 100))).type(FloatTensor)
-images = gen(seed)
+	seed = from_numpy(np.random.normal(0,1, size=(1, 100))).type(FloatTensor)
+	images = gen(seed)
 
-if not os.path.exists('./generated_images'):
-	os.mkdir('generated_images')
+	if not os.path.exists('./generated_images'):
+		os.mkdir('generated_images')
 
-save_image(images.data, "./generated_images/test.png", normalize=True)
+	image_save_path = "./generated_images/dcgan_epoch_" + str(epoch) + ".png"
+	save_image(images.data, image_save_path, normalize=True)
