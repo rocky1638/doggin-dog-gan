@@ -15,12 +15,20 @@ class Dataset(data.Dataset):
         'Initialization'
         self.evalu = evalu
         image_paths = glob.glob('{}/*'.format(image_folder_path))
-        self.datalist = [image_path for image_path in image_paths][:opts.numImages]
+
+        if opts.numImages == 0:
+            self.datalist = [image_path for image_path in image_paths]
+        else:
+            self.datalist = [image_path for image_path in image_paths][:opts.numImages]
+
 
     def __len__(self):
         'Denotes the total number of samples'
-        return opts.numImages
-        # return len(self.datalist)
+        if opts.numImages == 0:
+            return len(self.datalist)
+        else:
+            return opts.numImages
+
 
     def __getitem__(self, index):
         'Generates one sample of data'
@@ -39,6 +47,7 @@ class Dataset(data.Dataset):
         real_image = image_transformation(real_image)
 
         return real_image
+
 
 def GenerateIterator(image_path, evalu=False, shuffle=True):
     params = {
