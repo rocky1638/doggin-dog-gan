@@ -1,18 +1,21 @@
 import os
-from torch import load, from_numpy, FloatTensor
+from torch import load
 from torchvision.utils import save_image
-import numpy as np
 from models import Generator
 
-def generate_image(generator_path, epoch):	
+
+def generate_image(fixed_noise, epoch):
 	gen = Generator()
 	gen.load_state_dict(load('./generator.pt'))
 
-	seed = from_numpy(np.random.normal(0,1, size=(1, 100))).type(FloatTensor)
-	images = gen(seed)
+	images = gen(fixed_noise)
 
 	if not os.path.exists('./generated_images'):
 		os.mkdir('generated_images')
 
-	image_save_path = "./generated_images/dcgan_epoch_" + str(epoch) + ".png"
-	save_image(images.data, image_save_path, normalize=True)
+	image_save_path = "./generated_images/dcgan_epoch_{}/".format(epoch)
+	for i, image in enumerate(images):
+		if not os.path.exists(image_save_path):
+			os.mkdir(image_save_path)
+		save_image(image.data, image_save_path + str(i) + ".png", normalize=True)
+

@@ -1,13 +1,15 @@
 import glob
 from torch.utils import data
+import torch
 import torchvision.transforms as transforms
 import numpy as np
 from PIL import Image
 import torch
 from options import opts
 
-DATASET_MEAN = (0.485, 0.456, 0.406)
-DATASET_STD = (0.229, 0.224, 0.225)
+DATASET_MEAN = (0.5, 0.5, 0.5)
+DATASET_STD = (0.5, 0.5, 0.5)
+
 
 class Dataset(data.Dataset):
     'Characterizes a dataset for PyTorch'
@@ -16,6 +18,7 @@ class Dataset(data.Dataset):
         self.evalu = evalu
         image_paths = glob.glob('{}/*'.format(image_folder_path))
         self.datalist = [image_path for image_path in image_paths][:opts.numImages]
+        self.std = 0
 
     def __len__(self):
         'Denotes the total number of samples'
@@ -31,20 +34,24 @@ class Dataset(data.Dataset):
         side_length = min(real_image.size)
         image_transformation = transforms.Compose([
             transforms.RandomCrop(size=side_length),
-            transforms.Resize(size=(64,64), interpolation=Image.NEAREST),
+            transforms.Resize(size=opts.imageDims, interpolation=Image.NEAREST),
             transforms.ToTensor(),
             transforms.Normalize(mean=DATASET_MEAN, std=DATASET_STD),
         ])
 
         real_image = image_transformation(real_image)
 
+        # adding noise to ensure that discriminator does not overfit immediately
+        seed = torch.from_numpy(np.random.normal(0, self.std, size=opts.imageDims)).type(torch.FloatTensor)
+        real_image += seed
         return real_image
+
 
 def GenerateIterator(image_path, evalu=False, shuffle=True):
     params = {
         'batch_size': opts.batchSize,
         'shuffle': shuffle,
-        'num_workers': 0,
+        'num_workers': 8,
         'pin_memory': False,
         'drop_last': False,
     }
