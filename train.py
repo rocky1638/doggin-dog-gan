@@ -8,6 +8,8 @@ if __name__ == "__main__":
     from models import Generator, Discriminator
     from generate import generate_image
     from options import opts
+    from torchvision.utils import save_image
+    import datetime
 	
 
 	# Loss function
@@ -59,6 +61,7 @@ if __name__ == "__main__":
                 real_loss.backward()
 
                 fake_images = gen(seed).detach()
+
                 fake_loss = adversarial_loss(disc(fake_images), fake_image_labels)
                 fake_loss.backward()
 
@@ -91,7 +94,7 @@ if __name__ == "__main__":
         losses[0].append(avg_gen_loss)
         losses[1].append(avg_disc_loss)
 
-        if epoch % 3 == 1:
+        if epoch % 10 == 1:
             save(gen.state_dict(), './generator.pt')
             generate_image('./generator.pt', epoch=epoch, num_images=3)
 
@@ -104,4 +107,8 @@ if __name__ == "__main__":
     plt.legend(loc='upper left')
     plt.show()
 
+    now = datetime.datetime.now()
+
     save(gen.state_dict(), './generator.pt')
+    save(gen.state_dict(), './' + now.month() + '/' + now.day() + '_gen.pt')
+    save(gen.state_dict(), './' + now.month() + '/' + now.day() + '_disc.pt')
