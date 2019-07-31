@@ -6,7 +6,6 @@ parser.add_argument('--numImages', type=int, default=2000, help='number of image
 parser.add_argument('--batchSize', type=int, default=16, help='input batch size')
 parser.add_argument('--numEpochs', type=int, default=200, help='number of epochs to train for')
 parser.add_argument('--continueTrain', type=bool, default=False, help='continue to train from saved dict')
-parser.add_argument('--imageSize', type=int, default=128, help='side length of image')
 parser.add_argument('--imageDims', type=tuple, default=(128, 128), help='dimensions of image')
 
 parser.add_argument('--noiseSize', type=int, default=100, help='length of noise vector into generator')

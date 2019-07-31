@@ -1,10 +1,9 @@
 from torch import nn
 from options import opts
 
-ngf = opts.featureMultiplier
+ngf = ndf = opts.featureMultiplier
 nz = opts.noiseSize
 nc = opts.numChannels
-ndf = opts.featureMultiplier
 
 
 class Generator(nn.Module):
