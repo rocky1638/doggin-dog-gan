@@ -33,7 +33,7 @@ if __name__ == "__main__":
 	# fix the noise so that we can see the image generated on the same noise every epoch
 	fixed_noise = torch.randn(opts.outputNum, opts.noiseSize, 1, 1)
 
-	if cuda.is_available():
+	if torch.cuda.is_available():
 		adversarial_loss = adversarial_loss.cuda()
 		gen = gen.cuda()
 		disc = disc.cuda()
@@ -62,7 +62,7 @@ if __name__ == "__main__":
 
 			seed = torch.randn(images.shape[0], opts.noiseSize, 1, 1)
 
-			if cuda.is_available():
+			if torch.cuda.is_available():
 				valid_image_labels = valid_image_labels.cuda()
 				fake_image_labels = fake_image_labels.cuda()
 				valid_image_labels_d = valid_image_labels_d.cuda()
