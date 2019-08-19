@@ -3,3 +3,5 @@ images/*
 data/images_cropped/*
 .ipynb_checkpoints/*
 __pycache__/*
+api/scripts/__pycache__/*
+api/temp_dog.png
