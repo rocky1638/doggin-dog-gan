@@ -1,6 +1,8 @@
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+  padding-bottom: 10px;
+  background-color: #FFCAB1;
+  font-family: 'Comic Sans MS', -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
     "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
     sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -10,4 +12,42 @@ body {
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
+}
+
+button {
+  width: 200px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  border: none;
+  border-radius: 2px;
+  background-color: #ED6A5A;
+  color: #FFEFFF;
+  font-family: 'Comic Sans MS';
+  font-size: 1em;
+  cursor: pointer;
+}
+
+.dog-img {
+  width: 200px;
+}
+
+.w100 {
+  width: 100%;
+}
+
+.flex-col {
+  flex-direction: column;
+  text-align: center;
+}
+
+.f-jcc {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.f-aic {
+  width: 100%;
+  display: flex;
+  align-items: center;
 }

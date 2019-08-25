@@ -1,4 +1,5 @@
 import os
+import io
 import base64
 import json
 import random
@@ -51,15 +52,19 @@ def generate():
     return json.dumps({'image': send_image(image_tensor)})
 
 
-@app.route('/gannify', methods=["GET"])
+@app.route('/gannify', methods=["POST"])
 def gannify():
-    # TODO: use dog sent from fe
-    num = random.randint(1, 3)
-    dog = Image.open(f"./online_dogs/{num}.jpg")
+    data = request.data
+    dataDict = json.loads(data)
+    base64dog = dataDict['dog']
+    rawdog = base64.b64decode(base64dog)
+    dog = Image.open(io.BytesIO(rawdog))
+
     cropped_dog = randomCrop(dog)
     encoded_dog = encoder(cropped_dog)
     gannified_dog = generator(encoded_dog)[0]
-    return send_image(gannified_dog)
+
+    return json.dumps({'image': send_image(gannified_dog)})
 
 
 @app.route('/images', methods=["GET"])
@@ -68,7 +73,7 @@ def images():
     filename = str(index) + ".jpg"
     myImage = open('./online_dogs/' + filename, 'rb')
     myBase64File = base64.b64encode(myImage.read()).decode('ascii')
-    return myBase64File
+    return json.dumps({'image': myBase64File})
 
 
 if __name__ == "__main__":

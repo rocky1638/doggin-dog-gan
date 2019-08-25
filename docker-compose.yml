@@ -3,6 +3,8 @@ services:
   api:
     build:
       context: ./api
+    volumes:
+    - ./api:/usr/src/app
   fe:
     build:
       dockerfile: Dockerfile.dev
