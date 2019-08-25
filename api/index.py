@@ -1,4 +1,5 @@
 import os
+import base64
 import json
 import random
 from flask import Flask, request, send_file
@@ -12,7 +13,9 @@ from scripts.models import Generator, Imageencoder
 
 def send_image(img):
     save_image(img.data, "temp_dog.png", normalize=True)
-    return send_file("temp_dog.png")
+    myImage = open('temp_dog.png', 'rb')
+    myBase64File = base64.b64encode(myImage.read()).decode('ascii')
+    return myBase64File
 
 
 def randomCrop(img):
@@ -45,17 +48,27 @@ def index():
 def generate():
     seed = randn(1, 100, 1, 1)
     image_tensor = generator(seed)[0]
-    return send_image(image_tensor)
+    return json.dumps({'image': send_image(image_tensor)})
 
 
 @app.route('/gannify', methods=["GET"])
 def gannify():
+    # TODO: use dog sent from fe
     num = random.randint(1, 3)
     dog = Image.open(f"./online_dogs/{num}.jpg")
     cropped_dog = randomCrop(dog)
     encoded_dog = encoder(cropped_dog)
     gannified_dog = generator(encoded_dog)[0]
     return send_image(gannified_dog)
+
+
+@app.route('/images', methods=["GET"])
+def images():
+    index = random.randint(1, 10)
+    filename = str(index) + ".jpg"
+    myImage = open('./online_dogs/' + filename, 'rb')
+    myBase64File = base64.b64encode(myImage.read()).decode('ascii')
+    return myBase64File
 
 
 if __name__ == "__main__":

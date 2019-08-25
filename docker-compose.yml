@@ -1,9 +1,19 @@
 version: '3'
 services:
   api:
-    build: 
+    build:
       context: ./api
-    ports:
-      - '5000:5000'
+  fe:
+    build:
+      dockerfile: Dockerfile.dev
+      context: ./frontend
     volumes:
-      - ./api:/usr/src/app
+      - /usr/app/node_modules
+      - ./frontend:/usr/src/app
+  nginx:
+    restart: always
+    build:
+      dockerfile: Dockerfile.dev
+      context: ./nginx
+    ports:
+      - '3050:80'
