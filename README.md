@@ -15,4 +15,4 @@ All files associated with creating and training a GAN to produce images of dogs.
 2. Download the dataset images and annotations from [here](http://vision.stanford.edu/aditya86/ImageNetDogs/).
 3. Copy them to the root directory of the cloned project.
 
-Work in progress...
+Check out the app at https://dogs.rockzhou.com
