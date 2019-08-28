@@ -1,0 +1,32 @@
+{
+  "AWSEBDockerrunVersion": 2,
+  "containerDefinitions": [
+    {
+      "name": "fe",
+      "image": "rocky1638/dogs-fe",
+      "hostname": "fe",
+      "essential": false,
+      "memory": 128
+    },
+    {
+      "name": "api",
+      "image": "rocky1638/dogs-api",
+      "hostname": "api",
+      "essential": false,
+      "memory": 128
+    },
+    {
+      "name": "nginx",
+      "image": "rocky1638/dogs-nginx",
+      "essential": true,
+      "memory": 128,
+      "portMappings": [
+        {
+          "hostPort": 80,
+          "containerPort": 80
+        }
+      ],
+      "links": ["fe", "api"]
+    }
+  ]
+}

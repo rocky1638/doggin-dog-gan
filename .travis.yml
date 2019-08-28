@@ -1,0 +1,32 @@
+sudo: required
+services:
+  - docker
+
+before_install:
+
+script:
+  echo "tests passed"
+
+after_success:
+  - docker build -t rocky1638/dogs-fe ./frontend
+  - docker build -t rocky1638/dogs-api ./api
+  - docker build -t rocky1638/dogs-nginx ./nginx
+
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+
+  - docker push rocky1638/dogs-fe
+  - docker push rocky1638/dogs-api
+  - docker push rocky1638/dogs-nginx
+
+deploy:
+  provider: elasticbeanstalk
+  region: us-east-1
+  app: MovieReviewAnalysis
+  env: Moviereviewanalysis-env
+  bucket_name: elasticbeanstalk-us-east-1-726141900843
+  bucket_path: moviereviewanalysis
+  on:
+    branch: master
+  access_key_id: $AWS_ACCESS_KEY
+  secret_access_key:
+    secure: $AWS_SECRET_KEY
