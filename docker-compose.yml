@@ -3,19 +3,12 @@ services:
   api:
     build:
       context: ./api
-    volumes:
-    - ./api:/usr/src/app
   fe:
     build:
-      dockerfile: Dockerfile.dev
       context: ./frontend
-    volumes:
-      - /usr/app/node_modules
-      - ./frontend:/usr/src/app
   nginx:
     restart: always
     build:
-      dockerfile: Dockerfile.dev
       context: ./nginx
     ports:
-      - '3050:80'
+      - '3000:80'
