@@ -1,5 +1,7 @@
 # A GAN (Generative Adversarial Network) For Dogs 🐶
 
+[![Build Status](https://travis-ci.com/rocky1638/doggin-dog-gan.svg?branch=master)](https://travis-ci.com/rocky1638/doggin-dog-gan)
+
 <p align="center">
   <img width="200" src="http://clipart-library.com/newimages/dog-cartoon-10.jpg" />
 </div>
