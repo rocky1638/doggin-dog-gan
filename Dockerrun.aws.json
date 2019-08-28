@@ -13,7 +13,7 @@
       "image": "rocky1638/dogs-api",
       "hostname": "api",
       "essential": false,
-      "memory": 128
+      "memory": 256
     },
     {
       "name": "nginx",
