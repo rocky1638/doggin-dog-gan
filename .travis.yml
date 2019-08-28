@@ -21,10 +21,10 @@ after_success:
 deploy:
   provider: elasticbeanstalk
   region: us-east-1
-  app: MovieReviewAnalysis
-  env: Moviereviewanalysis-env
+  app: DogGAN
+  env: Doggan-env
   bucket_name: elasticbeanstalk-us-east-1-726141900843
-  bucket_path: moviereviewanalysis
+  bucket_path: doggan
   on:
     branch: master
   access_key_id: $AWS_ACCESS_KEY
