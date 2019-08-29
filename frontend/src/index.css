@@ -27,8 +27,34 @@ button {
   cursor: pointer;
 }
 
+p {
+  line-height: 1.618;
+}
+
+h3 {
+  margin-bottom: -10px;
+}
+
+h2 {
+  margin-top: 45px;
+}
+
 .dog-img {
   width: 200px;
+}
+
+.about-img {
+  margin: 10px 10px;
+}
+
+.about-div {
+  padding: 20px 25%;
+}
+
+@media only screen and (max-width: 800px) {
+  .about-div {
+    padding: 20px 5%;
+  }
 }
 
 .w100 {
